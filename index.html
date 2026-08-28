@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extingo — Control Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div class="brand-text">
+        <span class="brand-name">EXTINGO</span>
+        <span class="brand-sub">Control Center</span>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div class="meta-item">
+        <span class="meta-label">Panel ID</span>
+        <span class="meta-value" id="panel-id">EX-CC-04</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Uptime</span>
+        <span class="meta-value" id="uptime">00:00:00</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Local Time</span>
+        <span class="meta-value" id="clock">--:--:--</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="hazard-rule" role="presentation"></div>
+
+  <main class="dashboard">
+
+    <section id="status-banner" class="status-banner status-normal" aria-live="polite">
+      <span class="status-led" aria-hidden="true"></span>
+      <div class="status-copy">
+        <span class="status-label">System Status</span>
+        <span class="status-value" id="status-text">NORMAL</span>
+      </div>
+      <span class="status-detail" id="status-detail">All zones reporting within safe range</span>
+    </section>
+
+    <section class="sensor-grid" aria-label="Live sensor readings">
+
+      <article class="sensor-tile" data-sensor="flame">
+        <header class="tile-head">
+          <img class="tile-icon" src="assets/icons/flame.svg" alt="" aria-hidden="true">
+          <h3 class="tile-title">Flame</h3>
+          <span class="tile-tag">IR</span>
+        </header>
+        <div class="tile-body">
+          <span class="tile-value" id="flame-value">—</span>
+          <span class="tile-trend" id="flame-trend" data-trend="flat">▬</span>
+        </div>
+        <footer class="tile-foot">
+          <span class="tile-state" id="flame-state">Clear</span>
+        </footer>
+      </article>
+
+      <article class="sensor-tile" data-sensor="smoke">
+        <header class="tile-head">
+          <img class="tile-icon" src="assets/icons/smoke.svg" alt="" aria-hidden="true">
+          <h3 class="tile-title">Smoke</h3>
+          <span class="tile-tag">MQ2</span>
+        </header>
+        <div class="tile-body">
+          <span class="tile-value" id="smoke-value">—</span>
+          <span class="tile-unit">ppm</span>
+          <span class="tile-trend" id="smoke-trend" data-trend="flat">▬</span>
+        </div>
+        <footer class="tile-foot">
+          <span class="tile-state" id="smoke-state">Clear</span>
+        </footer>
+      </article>
+
+      <article class="sensor-tile" data-sensor="heat">
+        <header class="tile-head">
+          <img class="tile-icon" src="assets/icons/heat.svg" alt="" aria-hidden="true">
+          <h3 class="tile-title">Heat</h3>
+          <span class="tile-tag">DHT22</span>
+        </header>
+        <div class="tile-body">
+          <span class="tile-value" id="heat-value">—</span>
+          <span class="tile-unit">°C</span>
+          <span class="tile-trend" id="heat-trend" data-trend="flat">▬</span>
+        </div>
+        <footer class="tile-foot">
+          <span class="tile-state" id="heat-state">Nominal</span>
+        </footer>
+      </article>
+
+      <article class="sensor-tile" data-sensor="motion">
+        <header class="tile-head">
+          <img class="tile-icon" src="assets/icons/motion.svg" alt="" aria-hidden="true">
+          <h3 class="tile-title">Motion</h3>
+          <span class="tile-tag">PIR</span>
+        </header>
+        <div class="tile-body">
+          <span class="tile-value" id="motion-value">—</span>
+          <span class="tile-trend" id="motion-trend" data-trend="flat">▬</span>
+        </div>
+        <footer class="tile-foot">
+          <span class="tile-state" id="motion-state">Unoccupied</span>
+        </footer>
+      </article>
+
+      <article class="sensor-tile" data-sensor="pump">
+        <header class="tile-head">
+          <img class="tile-icon" src="assets/icons/pump.svg" alt="" aria-hidden="true">
+          <h3 class="tile-title">Pump / Exhaust</h3>
+          <span class="tile-tag">RELAY</span>
+        </header>
+        <div class="tile-body">
+          <span class="tile-value" id="pump-value">OFF</span>
+          <span class="tile-trend" id="pump-trend" data-trend="flat">▬</span>
+        </div>
+        <footer class="tile-foot">
+          <span class="tile-state" id="pump-state">Standby</span>
+        </footer>
+      </article>
+
+    </section>
+
+    <section class="chart-row" aria-label="Sensor history charts">
+      <div class="chart-panel">
+        <header class="panel-head">
+          <span class="panel-eyebrow">CH.1</span>
+          <h3 class="panel-title">Smoke History</h3>
+          <span class="panel-note">Last 30 readings</span>
+        </header>
+        <div class="chart-canvas-wrap">
+          <canvas id="smoke-chart" role="img" aria-label="Line chart of smoke sensor readings over time"></canvas>
+        </div>
+      </div>
+      <div class="chart-panel">
+        <header class="panel-head">
+          <span class="panel-eyebrow">CH.2</span>
+          <h3 class="panel-title">Heat History</h3>
+          <span class="panel-note">Last 30 readings</span>
+        </header>
+        <div class="chart-canvas-wrap">
+          <canvas id="heat-chart" role="img" aria-label="Line chart of heat sensor readings over time"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="prediction-panel" aria-label="Fire early-warning prediction">
+      <div class="prediction-gauge-wrap">
+        <svg class="prediction-gauge" viewBox="0 0 220 130" role="img" aria-labelledby="pred-gauge-title">
+          <title id="pred-gauge-title">Early-warning fire risk gauge</title>
+          <path class="gauge-track" d="M20 110 A90 90 0 0 1 200 110" />
+          <path class="gauge-fill" id="gauge-fill" d="M20 110 A90 90 0 0 1 200 110" />
+          <g id="gauge-needle" class="gauge-needle" transform="rotate(-90 110 110)">
+            <line x1="110" y1="110" x2="110" y2="34" />
+            <circle cx="110" cy="110" r="6" />
+          </g>
+          <text x="20" y="126" class="gauge-scale-label">0</text>
+          <text x="104" y="20" class="gauge-scale-label">50</text>
+          <text x="188" y="126" class="gauge-scale-label" text-anchor="end">100</text>
+        </svg>
+        <div class="gauge-readout">
+          <span class="gauge-percent" id="prediction-percent">0%</span>
+          <span class="gauge-caption" id="prediction-caption">Early-warning index</span>
+        </div>
+      </div>
+      <div class="prediction-detail">
+        <h3 class="panel-title">Fire Prediction</h3>
+        <p class="prediction-summary" id="prediction-summary">Awaiting sufficient sensor history to compute a trend.</p>
+        <dl class="prediction-factors">
+          <div class="factor-row">
+            <dt>Heat rate-of-rise</dt>
+            <dd id="factor-heat-ror">—</dd>
+          </div>
+          <div class="factor-row">
+            <dt>Smoke trend</dt>
+            <dd id="factor-smoke-trend">—</dd>
+          </div>
+          <div class="factor-row">
+            <dt>Flame / motion weight</dt>
+            <dd id="factor-flame-motion">—</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="log-panel">
+      <button type="button" class="log-toggle" id="log-toggle" aria-expanded="true" aria-controls="log-list">
+        <span class="panel-eyebrow">LOG</span>
+        <h3 class="panel-title">Action Log</h3>
+        <span class="log-toggle-icon" aria-hidden="true">▾</span>
+      </button>
+      <ul class="log-list" id="log-list"></ul>
+    </section>
+
+    <section class="override-panel" aria-label="Manual override controls">
+      <header class="panel-head">
+        <span class="panel-eyebrow">MANUAL</span>
+        <h3 class="panel-title">Override Panel</h3>
+        <span class="panel-note">Use only when directed by site protocol</span>
+      </header>
+      <div class="override-controls">
+        <div class="override-group">
+          <span class="override-group-label">Suppression</span>
+          <button type="button" class="override-btn" id="spray-btn" data-active="false">
+            <span class="btn-indicator" aria-hidden="true"></span>
+            Spray <span id="spray-state-label">OFF</span>
+          </button>
+        </div>
+        <div class="override-group">
+          <span class="override-group-label">Power</span>
+          <button type="button" class="override-btn" id="mcb-btn" data-active="false">
+            <span class="btn-indicator" aria-hidden="true"></span>
+            Toggle MCB
+          </button>
+        </div>
+        <div class="override-group override-group-contact">
+          <label class="override-group-label" for="contact-input">Emergency contact</label>
+          <input
+            type="tel"
+            id="contact-input"
+            class="contact-input"
+            placeholder="+1 555 010 2200"
+            autocomplete="off"
+            inputmode="tel">
+          <span class="contact-hint">Stored on this device only</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <span>Extingo Control Center — simulated sensor feed for demonstration</span>
+  </footer>
+
+  <!--
+    Chart.js was previously loaded from cdnjs.cloudflare.com, then from
+    jsdelivr — both got blocked client-side (net::ERR_BLOCKED_BY_CLIENT),
+    which left `Chart` undefined and crashed the whole boot sequence in
+    dashboard.js. Since two unrelated CDN domains were both blocked, this
+    is a filename/pattern block on the client (extension, browser shield,
+    or network filter), not a bad URL. Self-hosting it same-origin under
+    assets/js/ sidesteps that entirely — third-party-script blockers don't
+    touch same-origin requests.
+  -->
+  <script src="assets/js/chart.umd.js"></script>
+  <!--
+    Without this, dashboard.js falls back to http://localhost:8080 —
+    which on a deployed site means each visitor's own machine, not
+    your actual panel. That's why api.js was failing with
+    net::ERR_CONNECTION_REFUSED on every poll: nothing was listening
+    on the visitor's localhost:8080.
+    REPLACE the URL below with your real backend's public address
+    (the server that responds to GET {url}/api/data and POST
+    {url}/api/command).
+  -->
+  <!-- DEMO BUILD: points at the simulated mock backend (Render), not real hardware. -->
+  <script>
+    window.EXTINGO_SERVER_URL = "https://extingo-mock-backend.onrender.com";
+  </script>
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/history.js"></script>
+</body>
+</html>
